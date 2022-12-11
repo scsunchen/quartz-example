@@ -1,0 +1,37 @@
+spring:
+  quartz:
+    jdbc:
+      schema: classpath:org/quartz/impl/jdbcjobstore/tables_mysql_innodb.sql
+      initialize-schema: never
+    job-store-type: jdbc
+    properties:
+      org:
+        quartz:
+          scheduler:
+            instanceName: clusteredScheduler
+            instanceId: AUTO
+          jobStore:
+            isClustered: true
+            clusterCheckinInterval: 20000
+            driverDelegateClass: org.quartz.impl.jdbcjobstore.StdJDBCDelegate
+            tablePrefix: qrtz_
+            dataSource: myDS
+          dataSource:
+            myDS:
+              driver: com.mysql.cj.jdbc.Driver
+              provider: hikaricp
+              URL: jdbc:mysql://115.159.96.107:3306/xinqi?characterEncoding=UTF-8&serverTimezone=UTC
+              user: xinqi
+              password: RzbtGPDpyDcyfC8B
+              maxConnections: 30
+          plugin:
+            triggHistory:
+              class: org.quartz.plugins.history.LoggingTriggerHistoryPlugin
+            jobHistory:
+              class: org.quartz.plugins.history.LoggingJobHistoryPlugin
+          threadPool:
+            threadNamePrefix: testQuaztzPool
+
+    scheduler-name: studioScheduler
+    startup-delay: 0s
+    wait-for-jobs-to-complete-on-shutdown: true
